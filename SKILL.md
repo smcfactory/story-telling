@@ -9,6 +9,7 @@ description: |
   v0.1.0 covers positioning only; future versions will add the rest
   of the Craft step (product messaging, vision/mission, audience
   messaging, tone of voice).
+benefits-from: verdict-eval
 allowed-tools:
   - Read
   - Write
