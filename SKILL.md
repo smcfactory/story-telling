@@ -13,6 +13,8 @@ benefits-from: verdict-eval
 allowed-tools:
   - Read
   - Write
+  - Bash
+  - Grep
 ---
 
 # Story-Telling Skill (v0.1.0 — Positioning)
@@ -28,6 +30,35 @@ captured in Verdict's design doc.
   produced it in Phase 5 of the verdict-eval skill, then posted it as
   a fenced comment in Phase 7, and you extracted and committed it).
 - **The {project-name}** from the file path.
+
+## Pre-flight checks
+
+Before reading the design doc, verify all required sections exist.
+Run these checks — if any fail, HALT immediately (do not attempt
+partial extraction):
+
+```bash
+DOC="ideas/{project-name}/design-doc.md"
+
+# Verify file exists
+test -f "$DOC" || echo "HALT: design doc not found at $DOC"
+
+# Verify required sections
+grep -q "## Target User"            "$DOC" || echo "HALT: missing '## Target User & Narrowest Wedge'"
+grep -q "## Problem Statement"      "$DOC" || echo "HALT: missing '## Problem Statement'"
+grep -q "## Recommended Approach"   "$DOC" || echo "HALT: missing '## Recommended Approach'"
+grep -qE "## Demand Evidence|## Success Criteria" "$DOC" || echo "HALT: missing '## Demand Evidence' or '## Success Criteria'"
+
+# Check for SPECULATIVE flag in recommended approach
+grep -A 20 "## Recommended Approach" "$DOC" | grep -qi "SPECULATIVE" && echo "HALT: recommended approach is marked SPECULATIVE"
+```
+
+If any check prints HALT, stop. Report the missing section to the
+caller. Verdict must fix the design doc before this skill can run.
+
+If all checks pass, proceed to extraction.
+
+---
 
 ## Output
 
@@ -48,39 +79,85 @@ genuinely needs an extra clause). It must be specific enough that a
 reader who saw only this paragraph could explain what the product
 does and why someone should care.
 
-## Sourcing the four blanks
+## Extraction logic
 
-Read the design doc carefully. Source each blank from a specific
-section:
+Follow these steps in order. Do not skip steps. Do not improvise.
 
-- **[audience]** — from the design doc's "Target User & Narrowest
-  Wedge" section. Use the specific human or named cohort identified
-  there. **Never use a category.** "Enterprises", "developers",
-  "users", "marketing teams" are filters, not audiences. If the
-  design doc only has a category, the design doc failed Verdict's
-  Q3 (Desperate Specificity). Halt and report (see "Halting" below).
+```
+STEP 1 — EXTRACT PRODUCT NAME:
+  1. Read the first H1 heading ("# Design: {name}")
+  2. Extract {name} after the colon
+  3. Store as {product_name}
+  4. IF no H1 heading with "Design:" → HALT: "design doc has no title"
 
-- **[problem]** — from the design doc's "Problem Statement" section,
-  cross-referenced with "Status Quo" (Verdict's Q2 answers). State
-  the problem **functionally**, not emotionally. The framing should
-  match what users are actually doing badly today, in their own words
-  where possible.
+STEP 2 — EXTRACT AUDIENCE:
+  1. Read section "## Target User & Narrowest Wedge"
+  2. Find the first named person, role, or specific cohort
+  3. IF the section only contains generic categories
+     ("developers", "enterprises", "users", "teams",
+     "companies", "organizations") →
+     HALT: "audience is a category, not a person —
+     Verdict's Q3 (Desperate Specificity) failed"
+  4. ELSE → store as {audience}
 
-- **[product name]** — the project name from the design doc title
-  ("# Design: {project-name}").
+STEP 3 — EXTRACT PROBLEM:
+  1. Read section "## Problem Statement"
+  2. Read section "## Status Quo" for cross-reference
+  3. Pick the FUNCTIONAL framing — what users DO badly today
+     (not how they FEEL about it)
+  4. IF Problem Statement is empty or only emotional language
+     ("frustrated", "struggling", "overwhelmed") without a
+     functional description → rewrite functionally using
+     Status Quo details
+  5. Store as {problem}
 
-- **[solution]** — from the design doc's "Recommended Approach"
-  section in Phase 4 Level 1. One phrase that names what the product
-  actually does. **Forbidden words: "platform", "tool", "solution",
-  "AI-powered", "next-generation", "seamless", "intelligent",
-  "smart".** These are filler words that hide the absence of a real
-  description. Reference the actual mechanism.
+STEP 4 — EXTRACT SOLUTION:
+  1. Read section "## Recommended Approach"
+  2. Reduce to ONE phrase that names what the product does
+  3. Check phrase against forbidden words:
+     "platform", "tool", "solution", "AI-powered",
+     "next-generation", "seamless", "intelligent", "smart"
+  4. IF any forbidden word found → rewrite the phrase
+     without it (describe the mechanism, not the category)
+  5. IF the section says "SPECULATIVE" → HALT (pre-flight
+     should have caught this, but double-check)
+  6. Store as {solution}
 
-- **[benefit]** — from the design doc's "Demand Evidence" (Verdict's
-  Q1 answers) and "Success Criteria". This is the **user's outcome**,
-  not the product's feature list. Concrete, measurable when possible.
-  ("Quickly and affordably reach their next major funding milestone"
-  is a benefit. "Powered by AI" is not a benefit, it's a feature.)
+STEP 5 — EXTRACT BENEFIT:
+  1. Read section "## Demand Evidence"
+  2. Read section "## Success Criteria"
+  3. Pick the USER'S OUTCOME, not the product's feature
+     Good: "reach their next funding milestone"
+     Bad:  "powered by machine learning"
+  4. IF both sections are empty →
+     HALT: "no demand evidence or success criteria to
+     source benefit from"
+  5. Make it concrete and measurable where possible
+  6. Store as {benefit}
+
+STEP 6 — ASSEMBLE:
+  Compose: "For {audience}, who {problem}, {product_name}
+  {solution} that allows them to {benefit}."
+
+STEP 7 — VALIDATE:
+  1. Count sentences: MUST be 1 (max 2)
+     IF 3+ sentences → cut to the most load-bearing parts
+  2. Re-check {audience} is not a generic category
+  3. Re-check {solution} contains no forbidden words
+  4. Re-check {benefit} is an outcome, not a feature
+  5. Read the assembled statement as a stranger would —
+     could they explain what this product does and who
+     it's for from ONLY this sentence?
+     IF no → revise until yes
+  6. IF any check fails → revise, do not ship weak output
+
+STEP 8 — WRITE:
+  Write the assembled statement to
+  ideas/{project-name}/positioning.md
+  Nothing else in the file. No header. No preamble.
+  Report: "Positioning written to
+  ideas/{project-name}/positioning.md"
+```
 
 ## The shape you must match
 
@@ -119,38 +196,25 @@ Notice every part:
 
 ## Halting
 
-If any of these are true, **do not produce a weak positioning**.
-Halt the skill and report what's missing:
+Halts are enforced at two layers:
 
-- The design doc has no "Target User & Narrowest Wedge" section, OR
-  that section only contains a category (not a specific human).
-- The design doc has no "Problem Statement" section.
-- The design doc has no "Recommended Approach" section in Phase 4
-  Level 1.
-- The design doc has no "Demand Evidence" or "Success Criteria"
-  section.
-- The recommended approach is marked SPECULATIVE (Verdict's design
-  doc rules forbid speculative recommendations; if one slipped
-  through, Verdict's design doc has a different problem).
+1. **Pre-flight checks** (bash grep, before any reading) — catches
+   missing sections immediately.
+2. **Extraction steps** (STEP 1–5 above) — catches content-level
+   problems (category instead of person, emotional instead of
+   functional, speculative approach, empty evidence).
 
-When halting, write a comment to the user (not a file) describing
-exactly which input was missing and which design doc section it
-should have come from. Verdict should fix the design doc, then
-re-invoke this skill.
+When halting at either layer: **do not produce a weak positioning**.
+Report to the caller exactly which input was missing and which
+design doc section it should have come from. Verdict must fix the
+design doc, then Scout re-invokes this skill.
 
 ## Output format
 
-Write `ideas/{project-name}/positioning.md`. The file content is:
-
-```
-For [audience], who [problem], [product name] [solution] that allows them to [benefit].
-```
-
-That's the entire file. One paragraph. No frontmatter, no header, no
-trailing newline beyond the standard one.
-
-Then report to the caller: "Positioning written to
-`ideas/{project-name}/positioning.md`."
+STEP 8 of the extraction logic writes the file. The content is
+exactly the assembled statement from STEP 6 — one paragraph, no
+frontmatter, no header, no trailing text. The file path is
+`ideas/{project-name}/positioning.md`.
 
 ## Why this is named "story-telling" instead of "positioning"
 
