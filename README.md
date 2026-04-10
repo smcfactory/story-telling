@@ -62,15 +62,15 @@ Notice: specific audience, specific problem, named product, concrete
 solution, measurable benefit. That's the shape every output of this
 skill must match.
 
-## Scope of v0.1
+## Scope of v0.1.0
 
 This version implements **only the positioning statement**. Future versions
 will add the rest of the Craft step from the brand framework:
 
-- v0.2 — Product Messaging (3-5 sentence functional explanation)
-- v0.3 — Vision / Mission (why this matters now + bigger aspiration)
-- v0.4 — Audience Messaging (tailored variants for customers / hires / investors)
-- v0.5 — Tone of Voice (writing rules for the product's audience)
+- 0.2.0 — Product Messaging (3-5 sentence functional explanation)
+- 0.3.0 — Vision / Mission (why this matters now + bigger aspiration)
+- 0.4.0 — Audience Messaging (tailored variants for customers / hires / investors)
+- 0.5.0 — Tone of Voice (writing rules for the product's audience)
 
 Each expansion will be driven by a real downstream need, not by speculation.
 

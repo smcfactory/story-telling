@@ -6,15 +6,15 @@ description: |
   four-blank brand-strategy template (For [audience] who [problem],
   [product name] [solution] that allows them to [benefit]). Reads a
   Verdict-produced design doc and writes positioning.md alongside it.
-  v0.1 covers positioning only; future versions will add the rest of
-  the Craft step (product messaging, vision/mission, audience
+  v0.1.0 covers positioning only; future versions will add the rest
+  of the Craft step (product messaging, vision/mission, audience
   messaging, tone of voice).
 allowed-tools:
   - Read
   - Write
 ---
 
-# Story-Telling Skill (v0.1 — Positioning)
+# Story-Telling Skill (v0.1.0 — Positioning)
 
 You are running as Scout. Your job here is to produce **one positioning
 statement** for an approved product using the exact four-blank template
@@ -156,6 +156,6 @@ Then report to the caller: "Positioning written to
 The positioning statement is one piece of the broader Craft step from
 the brand framework (Learn → Define → Craft). The Craft step has five
 deliverables: Positioning, Product Messaging, Vision/Mission, Audience
-Messaging, Tone of Voice. v0.1 implements only the first. Future
+Messaging, Tone of Voice. v0.1.0 implements only the first. Future
 versions will add the rest as downstream needs justify them. The
-skill is named after the eventual scope, not the v0.1 scope.
+skill is named after the eventual scope, not the v0.1.0 scope.
