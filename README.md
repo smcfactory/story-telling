@@ -4,7 +4,11 @@ Story-telling skill for [SMCFactory](https://github.com/smcfactory) agents.
 
 ## Why this exists
 
-This skill is inspired by Steven Ebert's [Building Brands for Startups](https://youtu.be/QJ7Q-w_6k-g?si=jKT3VBlxqHb13J69) talk, where he makes a simple point that most founders miss: until you have revenue, all you have is a story — and most founders are terrible at telling it. Delian ([@zebulgar](https://x.com/zebulgar)) saw the same thing from the investor side — five different founders told him they were dissatisfied with how they tell their company story publicly, and that it was hurting their ability to hire. The problem isn't a lack of substance; it's that the substance is scattered across research docs, evaluation notes, and design decisions, and nobody sat down to compress it into the one sentence that makes a stranger care. This skill exists to do that compression automatically — it reads a Verdict-approved design doc where all the hard questions have already been answered, extracts the audience, the problem, the solution, and the benefit, and assembles them into a single positioning statement. No marketing talent needed, no storytelling workshops, no "let me think about our narrative." The evidence is already there. The skill just shapes it.
+This skill is inspired by Steven Ebert's [Building Brands for Startups](https://youtu.be/QJ7Q-w_6k-g?si=jKT3VBlxqHb13J69) talk, where he makes a simple point that most founders miss: until you have revenue, all you have is a story — and most founders are terrible at telling it. Delian ([@zebulgar](https://x.com/zebulgar)) saw the same thing from the investor side — five different founders told him they were dissatisfied with how they tell their company story publicly, and that it was hurting their ability to hire.
+
+The problem isn't a lack of substance; it's that the substance is scattered across research docs, evaluation notes, and design decisions, and nobody sat down to compress it into the one sentence that makes a stranger care.
+
+This skill exists to do that compression automatically — it reads a Verdict-approved design doc where all the hard questions have already been answered, extracts the audience, the problem, the solution, and the benefit, and assembles them into a single positioning statement. No marketing talent needed, no storytelling workshops, no "let me think about our narrative." The evidence is already there. The skill just shapes it.
 
 ## The template
 
