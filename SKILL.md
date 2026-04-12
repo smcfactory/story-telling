@@ -19,10 +19,10 @@ allowed-tools:
 
 # Story-Telling Skill (v0.1.0 — Positioning)
 
-You are running as Scout. Your job here is to produce **one positioning
-statement** for an approved product using the exact four-blank template
-from the brand-strategy framework, derived from the inputs already
-captured in Verdict's design doc.
+You are running as an SMCFactory agent. Your job here is to produce
+**one positioning statement** for an approved product using the exact
+four-blank template from the brand-strategy framework, derived from
+the inputs already captured in Verdict's design doc.
 
 ## Inputs
 
