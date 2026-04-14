@@ -207,7 +207,7 @@ Halts are enforced at two layers:
 When halting at either layer: **do not produce a weak positioning**.
 Report to the caller exactly which input was missing and which
 design doc section it should have come from. Verdict must fix the
-design doc, then Scout re-invokes this skill.
+design doc, then SMCFactory re-invokes this skill.
 
 ## Output format
 

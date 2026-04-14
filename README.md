@@ -23,12 +23,12 @@ that allows them to [benefit].
 
 ## When it runs
 
-Scout invokes `/story-telling` after Verdict has APPROVED an idea and
-Scout has saved the design doc to `ideas/{project-name}/design-doc.md`
+SMCFactory invokes `/story-telling` after Verdict has APPROVED an idea and
+SMCFactory has saved the design doc to `ideas/{project-name}/design-doc.md`
 in [smcfactory/factory-ops](https://github.com/smcfactory/factory-ops).
 The skill reads the design doc and writes
 `ideas/{project-name}/positioning.md` next to it. Both files get
-committed in the same Scout commit.
+committed in the same SMCFactory commit.
 
 ## Why one sentence matters
 
